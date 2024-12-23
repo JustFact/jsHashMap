@@ -35,6 +35,10 @@ function HashMap(capacity = 6) {
   let bucket = Array.from("_".repeat(capacity));
   let numberOfEntries = 0;
 
+  const getBucket = () => {
+    return bucket;
+  };
+
   const getBucketSize = () => {
     return bucket.length;
   };
@@ -72,21 +76,22 @@ function HashMap(capacity = 6) {
 
   return {
     hash,
-    bucket, //temporary access to bucket
     set,
     getBucketSize,
+    getBucket,
   };
 }
 
 let test = HashMap();
 
-console.log(test.bucket);
+console.log(test.getBucket());
 test.set("Abc", "First");
 test.set("bAc", "Second");
 test.set("bcA", "Third");
 test.set("zzz", "Fourth");
 test.set("jjj", "fifth");
-console.log(test.bucket);
-console.log(test.bucket[4].getHead());
-console.log(test.getBucketSize());
-console.log(test.bucket);
+// console.log(test.getBucket());
+console.log(test.getBucket()[0].getHead());
+console.log(test.getBucket()[4].getHead());
+console.log(test.getBucket()[6].getHead());
+console.log(test.getBucket());
