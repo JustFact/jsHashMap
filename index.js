@@ -30,9 +30,14 @@ const newLinkedList = () => {
   };
 };
 
-function HashMap(capacity = 16) {
+function HashMap(capacity = 6) {
   let loadFactor = 0.75;
   let bucket = Array.from("_".repeat(capacity));
+  let numberOfEntries = 0;
+
+  const getBucketSize = () => {
+    return bucket.length;
+  };
 
   const hash = (key) => {
     let hashCode = 0;
@@ -45,25 +50,31 @@ function HashMap(capacity = 16) {
   };
 
   const set = (key, value) => {
+    if (getBucketSize() * loadFactor - numberOfEntries <= 1) {
+      //I literally have no idea what i'm suppose to do here.
+      //increasing size of array in Javascript doesn't make sense
+      //let's pretend it was actually required
+      bucket = Array.from([...bucket, ..."_".repeat(capacity)]);
+      capacity = capacity * 2;
+    }
+
     let index = hash(key);
     let list;
     if (bucket[index] === "_") {
       list = newLinkedList();
-      // console.log("call 1 ", list.getHead());
     } else {
       list = bucket[index];
-      // console.log("call 2", list.getHead());
     }
-
+    numberOfEntries = numberOfEntries + 1;
     list.append({ key, value });
     bucket[index] = list;
-    // console.log("call 3 ", list.getHead());
   };
 
   return {
     hash,
     bucket, //temporary access to bucket
     set,
+    getBucketSize,
   };
 }
 
@@ -73,4 +84,9 @@ console.log(test.bucket);
 test.set("Abc", "First");
 test.set("bAc", "Second");
 test.set("bcA", "Third");
+test.set("zzz", "Fourth");
+test.set("jjj", "fifth");
+console.log(test.bucket);
+console.log(test.bucket[4].getHead());
+console.log(test.getBucketSize());
 console.log(test.bucket);
