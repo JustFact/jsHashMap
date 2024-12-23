@@ -89,10 +89,26 @@ function HashMap(capacity = 6) {
     return null;
   };
 
+  const has = (key) => {
+    for (let i = 0; i < bucket.length; i++) {
+      if (bucket[i] !== "_") {
+        let currentNode = bucket[i].getHead();
+        do {
+          if (currentNode.value.key === key) {
+            return true;
+          }
+          currentNode = currentNode.next;
+        } while (currentNode);
+      }
+    }
+    return false;
+  };
+
   return {
     hash,
     set,
     get,
+    has,
     getBucketSize,
     getBucket,
   };
@@ -111,4 +127,4 @@ console.log(test.getBucket()[0].getHead());
 console.log(test.getBucket()[4].getHead());
 console.log(test.getBucket()[6].getHead());
 console.log(test.getBucket());
-console.log(test.get("xxx"));
+console.log(test.has("zxy"));
