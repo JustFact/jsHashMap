@@ -30,7 +30,7 @@ const newLinkedList = () => {
   };
 };
 
-function HashMap(capacity = 6) {
+function HashMap(capacity = 16) {
   let loadFactor = 0.75;
   let bucket = Array.from("_".repeat(capacity));
   let numberOfEntries = 0;
@@ -161,6 +161,20 @@ function HashMap(capacity = 6) {
     return result;
   };
 
+  const entries = () => {
+    let result = [];
+    for (let i = 0; i < bucket.length; i++) {
+      if (bucket[i] !== "_") {
+        let currentNode = bucket[i].getHead();
+        do {
+          result.push([currentNode.value.key, currentNode.value.value]);
+          currentNode = currentNode.next;
+        } while (currentNode);
+      }
+    }
+    return result;
+  };
+
   return {
     hash,
     set,
@@ -171,6 +185,7 @@ function HashMap(capacity = 6) {
     clear,
     keys,
     values,
+    entries,
     getBucketSize,
     getBucket,
   };
@@ -179,18 +194,18 @@ function HashMap(capacity = 6) {
 let test = HashMap();
 
 console.log(test.getBucket());
-test.set("Abc", "First");
-test.set("bAc", "Second");
-test.set("bcA", "Third");
-test.set("zzz", "Fourth");
-test.set("jjj", "fifth");
-console.log(test.getBucket()[0].getHead());
-console.log(test.getBucket()[6].getHead());
-console.log(test.getBucket()[4].getHead());
+console.log(test.getBucketSize());
+test.set("apple", "red");
+test.set("banana", "yellow");
+test.set("carrot", "orange");
+test.set("dog", "brown");
+test.set("elephant", "gray");
+test.set("frog", "green");
+test.set("grape", "purple");
+test.set("hat", "black");
+test.set("ice cream", "white");
+test.set("jacket", "blue");
+test.set("kite", "pink");
+test.set("lion", "golden");
 console.log(test.getBucket());
-// console.log(test.remove("bAc"));
-console.log(test.getBucket());
-console.log(test.getBucket()[4].getHead());
-// test.clear();
-console.log(test.getBucket());
-console.log(test.values());
+console.log(test.entries());
