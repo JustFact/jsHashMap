@@ -126,12 +126,24 @@ function HashMap(capacity = 6) {
     return false;
   };
 
+  const length = () => {
+    return numberOfEntries;
+  };
+
+  const clear = () => {
+    for (let i = 0; i < bucket.length; i++) {
+      bucket[i] = "_";
+    }
+  };
+
   return {
     hash,
     set,
     get,
     has,
     remove,
+    length,
+    clear,
     getBucketSize,
     getBucket,
   };
@@ -152,3 +164,5 @@ console.log(test.getBucket());
 console.log(test.remove("bAc"));
 console.log(test.getBucket());
 console.log(test.getBucket()[4].getHead());
+test.clear();
+console.log(test.getBucket());
