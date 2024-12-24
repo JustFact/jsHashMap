@@ -54,7 +54,7 @@ function HashMap(capacity = 16) {
   };
 
   const set = (key, value) => {
-    if (getBucketSize() * loadFactor - numberOfEntries <= 1) {
+    if (getBucketSize() * loadFactor < numberOfEntries) {
       bucket = Array.from([...bucket, ..."_".repeat(capacity)]);
       capacity = capacity * 2;
     }
