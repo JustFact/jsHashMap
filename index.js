@@ -55,9 +55,6 @@ function HashMap(capacity = 6) {
 
   const set = (key, value) => {
     if (getBucketSize() * loadFactor - numberOfEntries <= 1) {
-      //I literally have no idea what i'm suppose to do here.
-      //increasing size of array in Javascript doesn't make sense
-      //let's pretend it was actually required
       bucket = Array.from([...bucket, ..."_".repeat(capacity)]);
       capacity = capacity * 2;
     }
@@ -136,6 +133,20 @@ function HashMap(capacity = 6) {
     }
   };
 
+  const keys = () => {
+    let result = [];
+    for (let i = 0; i < bucket.length; i++) {
+      if (bucket[i] !== "_") {
+        let currentNode = bucket[i].getHead();
+        do {
+          result.push(currentNode.value.key);
+          currentNode = currentNode.next;
+        } while (currentNode);
+      }
+    }
+    return result;
+  };
+
   return {
     hash,
     set,
@@ -144,6 +155,7 @@ function HashMap(capacity = 6) {
     remove,
     length,
     clear,
+    keys,
     getBucketSize,
     getBucket,
   };
@@ -161,8 +173,9 @@ console.log(test.getBucket()[0].getHead());
 console.log(test.getBucket()[6].getHead());
 console.log(test.getBucket()[4].getHead());
 console.log(test.getBucket());
-console.log(test.remove("bAc"));
+// console.log(test.remove("bAc"));
 console.log(test.getBucket());
 console.log(test.getBucket()[4].getHead());
-test.clear();
+// test.clear();
 console.log(test.getBucket());
+console.log(test.keys());
