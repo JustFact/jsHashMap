@@ -147,6 +147,20 @@ function HashMap(capacity = 6) {
     return result;
   };
 
+  const values = () => {
+    let result = [];
+    for (let i = 0; i < bucket.length; i++) {
+      if (bucket[i] !== "_") {
+        let currentNode = bucket[i].getHead();
+        do {
+          result.push(currentNode.value.value);
+          currentNode = currentNode.next;
+        } while (currentNode);
+      }
+    }
+    return result;
+  };
+
   return {
     hash,
     set,
@@ -156,6 +170,7 @@ function HashMap(capacity = 6) {
     length,
     clear,
     keys,
+    values,
     getBucketSize,
     getBucket,
   };
@@ -178,4 +193,4 @@ console.log(test.getBucket());
 console.log(test.getBucket()[4].getHead());
 // test.clear();
 console.log(test.getBucket());
-console.log(test.keys());
+console.log(test.values());
