@@ -24,9 +24,46 @@ const newLinkedList = () => {
     }
   };
 
+  const replaceValue = (value) => {
+    if (head === null) {
+      return;
+    }
+
+    let currentNode = head;
+    while (currentNode) {
+      if (currentNode.value.key === value.key) {
+        currentNode.value.value = value.value;
+        return;
+      }
+      currentNode = currentNode.next;
+    }
+  };
+
+  const contains = (value) => {
+    console.log(head, value);
+    if (head === null) {
+      return false;
+    }
+    let currentNode = head;
+    // console.log(head, value);
+    if (currentNode.value.key === value) {
+      return true;
+    }
+
+    while (currentNode.next !== null) {
+      currentNode = currentNode.next;
+      if (currentNode.value.key === value) {
+        return true;
+      }
+    }
+    return false;
+  };
+
   return {
     append,
     getHead,
+    replaceValue,
+    contains,
   };
 };
 
@@ -56,6 +93,8 @@ function HashMap(capacity = 16) {
   const set = (key, value) => {
     numberOfEntries = numberOfEntries + 1;
     if (getBucketSize() * loadFactor < numberOfEntries) {
+      //TODO: re-add all the key-value pairs according to new bucket size
+      //the following is a temporary solution and is not correct
       bucket = Array.from([...bucket, ..."_".repeat(capacity)]);
       capacity = capacity * 2;
     }
@@ -67,7 +106,13 @@ function HashMap(capacity = 16) {
     } else {
       list = bucket[index];
     }
-    list.append({ key, value });
+    // console.log(list.contains(key), key);
+    if (list.contains(key)) {
+      // console.log("worked on", key);
+      list.replaceValue({ key, value });
+    } else {
+      list.append({ key, value });
+    }
     bucket[index] = list;
   };
 
@@ -193,8 +238,8 @@ function HashMap(capacity = 16) {
 
 let test = HashMap();
 
-console.log(test.getBucket());
-console.log(test.getBucketSize());
+// console.log(test.getBucket());
+// console.log(test.getBucketSize());
 test.set("apple", "red");
 test.set("banana", "yellow");
 test.set("carrot", "orange");
@@ -207,5 +252,10 @@ test.set("ice cream", "white");
 test.set("jacket", "blue");
 test.set("kite", "pink");
 test.set("lion", "golden");
-console.log(test.getBucket());
+// console.log(test.getBucket());
 console.log(test.entries());
+test.set("hat", "silver");
+console.log(test.getBucketSize());
+console.log(test.entries());
+console.log(test.hash("grape"));
+console.log(test.hash("hat"));
